@@ -1,3 +1,4 @@
+using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
 using GraphQL_c_sharp.Interface;
@@ -35,7 +36,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseGraphQL("/graphql");
+app.UseGraphiQl("/graphql");
 app.UseGraphQL<ISchema>();
 
 app.UseAuthorization();
