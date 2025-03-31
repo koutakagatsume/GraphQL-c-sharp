@@ -1,6 +1,10 @@
+using GraphQL;
+using GraphQL.Types;
 using GraphQL_c_sharp.Interface;
+using GraphQL_c_sharp.Query;
+using GraphQL_c_sharp.Schema;
 using GraphQL_c_sharp.Services;
-
+using GraphQL_c_sharp.Type;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+
+builder.Services.AddTransient<MenuType>();
+builder.Services.AddTransient<MenuQuery>();
+builder.Services.AddTransient<ISchema, MenuSchema>();
+
+builder.Services.AddGraphQL(b => b.AddAutoSchema<ISchema>().AddSystemTextJson());
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,6 +34,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseGraphQL("/graphql");
+app.UseGraphQL<ISchema>();
 
 app.UseAuthorization();
 
