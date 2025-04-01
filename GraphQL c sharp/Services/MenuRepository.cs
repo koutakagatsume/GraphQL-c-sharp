@@ -18,19 +18,19 @@ namespace GraphQL_c_sharp.Services
                 Price = 8.99
             },
             new Menu() {
-                Id=1,
+                Id=2,
                 Name="classic Burger",
                 Description="A juicy chicken burger with lettuce and cheese",
                 Price = 9.99
             },
             new Menu() {
-                Id=1,
+                Id=3,
                 Name="classic Burger",
                 Description="A juicy chicken burger with lettuce and cheese",
                 Price = 10.99
             },
             new Menu() {
-                Id=1,
+                Id=4,
                 Name="classic Burger",
                 Description="A juicy chicken burger with lettuce and cheese",
                 Price = 11.99
@@ -45,7 +45,17 @@ namespace GraphQL_c_sharp.Services
 
         public void DeleteMenu(int id)
         {
-            MenuList.RemoveAt(id);
+            // IDで該当するメニューを検索
+            Menu menuToRemove = MenuList.FirstOrDefault(m => m.Id == id);
+            
+            if (menuToRemove != null)
+            {
+                // 見つかったメニューを削除
+                MenuList.Remove(menuToRemove);
+            }
+            
+            // 指定されたIDのメニューが見つからなかった場合
+            // return false;
         }
 
         public List<Menu> GetAllMenus()
@@ -59,7 +69,19 @@ namespace GraphQL_c_sharp.Services
 
         public Menu UpdateMenu(int id, Menu menu)
         {
-            MenuList[id] = menu;
+            int index = MenuList.FindIndex(m => m.Id == id);
+            
+            if (index != -1)
+            {
+                // 既存のIDを保持することで一貫性を維持
+                menu.Id = id;
+                
+                // 見つかったインデックスのメニューを更新
+                MenuList[index] = menu;
+                return menu;
+            }
+            
+            // 指定されたIDのメニューが見つからなかった場合
             return menu;
         }
     }
